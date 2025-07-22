@@ -1,10 +1,9 @@
 package org.example.spring12recap.controller;
 
 import org.example.spring12recap.model.Todo;
+import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.service.TodoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +20,10 @@ public class TodoController {
     @GetMapping
     public List<Todo> getAll() {
         return service.getAll();
+    }
+
+    @PostMapping
+    public Todo addTodo(@RequestBody TodoDTO todoDTO) {
+        return service.addTodo(todoDTO);
     }
 }
