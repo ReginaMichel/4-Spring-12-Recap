@@ -51,4 +51,9 @@ public class TodoController {
     public LinkedHashMap<Integer, Change> getHistory() {
         return service.getHistory();
     }
+
+    @GetMapping("/undo")
+    public void undoLastChange() {
+        service.undoLastChange();
+    }
 }
