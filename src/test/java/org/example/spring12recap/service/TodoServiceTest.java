@@ -15,6 +15,9 @@ import static org.mockito.Mockito.*;
 
 class TodoServiceTest {
 
+    // Ich habe bisher nur 3 Unit Tests geschrieben, da ich lieber noch Zeit
+    // für die Bonus-Aufgaben haben möchte.
+
     @Test
     void getAll() {
         List<Todo> expected = List.of(
@@ -51,15 +54,6 @@ class TodoServiceTest {
         verify(mockId, times(1)).generateID();
         verifyNoMoreInteractions(mockRepo, mockId);
     }
-
-    // To be added later.
-/*    @Test
-    void getById() {
-    }
-
-    @Test
-    void updateById() {
-    }*/
 
     @Test
     void deleteById() {
