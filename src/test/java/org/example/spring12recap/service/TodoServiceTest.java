@@ -63,5 +63,19 @@ class TodoServiceTest {
 
     @Test
     void deleteById() {
+        // GIVEN
+        Todo expected = new Todo("3","Schlafen", OrderStatus.DONE);
+        TodoRepository mockRepo = mock(TodoRepository.class);
+        TodoService service = new TodoService(mockRepo, new IdService());
+        when(mockRepo.findById(expected.id())).thenReturn(Optional.of(expected));
+        // WHEN
+        Todo actual = service.deleteById(expected.id());
+        // THEN
+        assertEquals(expected, actual);
+        verify(mockRepo, times(1))
+                .findById(expected.id());
+        verify(mockRepo, times(1))
+                .deleteById(expected.id());
+        verifyNoMoreInteractions(mockRepo);
     }
 }
