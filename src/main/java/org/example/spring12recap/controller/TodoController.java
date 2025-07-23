@@ -36,4 +36,9 @@ public class TodoController {
     public Todo updateById(@PathVariable String id, @RequestBody TodoDTO todoDTO) {
         return service.updateById(id, todoDTO);
     }
+
+    @DeleteMapping("/{id}")
+    public Todo deleteById(@PathVariable String id) {
+        return service.deleteById(id);
+    }
 }

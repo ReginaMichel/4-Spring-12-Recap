@@ -35,4 +35,10 @@ public class TodoService {
         repo.save(new Todo(id, todoDTO.description(), todoDTO.status()));
         return repo.findById(id).orElse(null);
     }
+
+    public Todo deleteById(String id) {
+        Todo toBeRemoved = repo.findById(id).orElse(null);
+        repo.deleteById(id);
+        return toBeRemoved;
+    }
 }
