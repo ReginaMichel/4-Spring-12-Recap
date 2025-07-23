@@ -3,6 +3,7 @@ package org.example.spring12recap.controller;
 import org.example.spring12recap.model.Todo;
 import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.service.TodoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class TodoController {
         return service.getAll();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Todo addTodo(@RequestBody TodoDTO todoDTO) {
         return service.addTodo(todoDTO);
@@ -37,6 +39,7 @@ public class TodoController {
         return service.updateById(id, todoDTO);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public Todo deleteById(@PathVariable String id) {
         return service.deleteById(id);
