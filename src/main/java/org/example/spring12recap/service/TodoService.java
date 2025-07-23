@@ -26,4 +26,8 @@ public class TodoService {
                 todoDTO.status()));
         return repo.findById(newID).orElse(null);
     }
+
+    public Todo getById(String id) {
+        return repo.findById(id).orElse(null);
+    }
 }
