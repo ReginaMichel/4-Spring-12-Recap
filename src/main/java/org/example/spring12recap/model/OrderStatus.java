@@ -4,15 +4,13 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    TODO("Todo",1),
-    DOING("Doing",2),
-    DONE("Done",3);
+    OPEN("OPEN"),
+    IN_PROGRESS("IN_PROGRESS"),
+    DONE("DONE");
 
     private final String text;
-    private final int number;
 
-    OrderStatus(String text, int number) {
+    OrderStatus(String text) {
         this.text = text;
-        this.number = number;
     }
 }
