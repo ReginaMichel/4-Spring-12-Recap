@@ -6,13 +6,14 @@ import org.example.spring12recap.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TodoService {
     private final TodoRepository repo;
-    public TodoService(TodoRepository repo) {
+    private final IdService idService;
+    public TodoService(TodoRepository repo, IdService idService) {
         this.repo = repo;
+        this.idService = idService;
     }
 
     public List<Todo> getAll() {
@@ -20,7 +21,7 @@ public class TodoService {
     }
 
     public Todo addTodo(TodoDTO todoDTO) {
-        String newID = UUID.randomUUID().toString();
+        String newID = idService.generateID();
         repo.save(new Todo(newID,
                 todoDTO.description(),
                 todoDTO.status()));
