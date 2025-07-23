@@ -6,6 +6,7 @@ import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,20 @@ class TodoServiceTest {
 
     @Test
     void getAll() {
+        List<Todo> expected = List.of(
+                new Todo("1", "Test", OrderStatus.OPEN),
+                new Todo("2", "Inhalt", OrderStatus.DONE)
+        );
+        TodoRepository mockRepo = mock(TodoRepository.class);
+        TodoService service = new TodoService(mockRepo, new IdService());
+        when(mockRepo.findAll()).thenReturn(expected);
+        assertEquals(expected, service.getAll());
+        verify(mockRepo, times(1)).findAll();
+        verifyNoMoreInteractions(mockRepo);
+    }
+
+    @Test
+    void addTodo() {
         // GIVEN
         TodoDTO todoDTO = new TodoDTO("Dominic um Hilfe fragen",
                 OrderStatus.DONE);
@@ -37,17 +52,14 @@ class TodoServiceTest {
         verifyNoMoreInteractions(mockRepo, mockId);
     }
 
-    @Test
-    void addTodo() {
-    }
-
-    @Test
+    // To be added later.
+/*    @Test
     void getById() {
     }
 
     @Test
     void updateById() {
-    }
+    }*/
 
     @Test
     void deleteById() {
