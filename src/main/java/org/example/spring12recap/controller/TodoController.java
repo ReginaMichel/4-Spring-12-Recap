@@ -1,11 +1,13 @@
 package org.example.spring12recap.controller;
 
+import org.example.spring12recap.model.Change;
 import org.example.spring12recap.model.Todo;
 import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -43,5 +45,15 @@ public class TodoController {
     @DeleteMapping("/{id}")
     public Todo deleteById(@PathVariable String id) {
         return service.deleteById(id);
+    }
+
+    @GetMapping("/history")
+    public LinkedHashMap<Integer, Change> getHistory() {
+        return service.getHistory();
+    }
+
+    @GetMapping("/undo")
+    public void undoLastChange() {
+        service.undoLastChange();
     }
 }
