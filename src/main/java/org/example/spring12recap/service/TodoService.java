@@ -30,4 +30,9 @@ public class TodoService {
     public Todo getById(String id) {
         return repo.findById(id).orElse(null);
     }
+
+    public Todo updateById(String id, TodoDTO todoDTO) {
+        repo.save(new Todo(id, todoDTO.description(), todoDTO.status()));
+        return repo.findById(id).orElse(null);
+    }
 }
