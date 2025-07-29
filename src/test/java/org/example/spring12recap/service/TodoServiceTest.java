@@ -5,7 +5,6 @@ import org.example.spring12recap.model.Todo;
 import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -17,9 +16,6 @@ import static org.mockito.Mockito.*;
 
 class TodoServiceTest {
 
-    // Ich habe bisher nur 3 Unit Tests geschrieben, da ich lieber noch Zeit
-    // für die Bonus-Aufgaben haben möchte.
-
     @Test
     void getAll() {
         List<Todo> expected = List.of(
@@ -28,6 +24,7 @@ class TodoServiceTest {
         );
         TodoRepository mockRepo = mock(TodoRepository.class);
         RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        RestClient restClient = mock(RestClient.class);
         TodoService service = new TodoService(mockRepo, new IdService(),
                 restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findAll()).thenReturn(expected);
@@ -47,6 +44,10 @@ class TodoServiceTest {
         TodoRepository mockRepo = mock(TodoRepository.class);
         IdService mockId = mock(IdService.class);
         RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        RestClient restClient = mock(RestClient.class);
+        when(restClientBuilder.baseUrl(anyString())).thenReturn(restClientBuilder);
+        when(restClientBuilder.defaultHeader(anyString(), anyString())).thenReturn(restClientBuilder);
+        when(restClientBuilder.build()).thenReturn(restClient);
         TodoService todoService = new TodoService(mockRepo, mockId,
                 restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findById(id)).thenReturn(Optional.of(todo));
@@ -67,6 +68,10 @@ class TodoServiceTest {
         Todo expected = new Todo("3","Schlafen", OrderStatus.DONE);
         TodoRepository mockRepo = mock(TodoRepository.class);
         RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        RestClient restClient = mock(RestClient.class);
+        when(restClientBuilder.baseUrl(anyString())).thenReturn(restClientBuilder);
+        when(restClientBuilder.defaultHeader(anyString(), anyString())).thenReturn(restClientBuilder);
+        when(restClientBuilder.build()).thenReturn(restClient);
         TodoService service = new TodoService(mockRepo, new IdService(),
                 restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findById(expected.id())).thenReturn(Optional.of(expected));

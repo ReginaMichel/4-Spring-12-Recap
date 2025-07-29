@@ -26,9 +26,6 @@ class TodoControllerTest {
     @Autowired
     private TodoRepository repo;
 
-    // Ich habe bisher nur 2 Integration Tests geschrieben, da ich lieber
-    // noch Zeit für die Bonus-Aufgaben haben möchte.
-
     @Test
     void updateById() throws Exception {
         //GIVEN
