@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -37,8 +38,20 @@ public class TodoService {
 
     public Todo addTodo(TodoDTO todoDTO) {
         String newID = idService.generateID();
+        OpenAiMessage requestMessage = new OpenAiMessage("user",
+                "Bitte mache eine Rechtschreibkorrektur für den folgenden" +
+                        "Eintrag und gib ihn anschließend zurück, ohne weiteren" +
+                        "Text: "
+                        + todoDTO.description());
+        List<OpenAiMessage> messages = new ArrayList<>();
+        messages.add(requestMessage);
+        OpenAiRequest request = new OpenAiRequest("gpt-4.1",
+                messages); // war "gtp-4o-mini" billiger, "gpt-4.1" teurer
+        OpenAiResponse openAiResponse = restClient.post()
+                .body(request)
+                .retrieve().body(OpenAiResponse.class);
         repo.save(new Todo(newID,
-                todoDTO.description(),
+                openAiResponse.choices().get(0).message().content(),
                 todoDTO.status()));
         history.put(counter, new Change(ChangeType.POST, newID, todoDTO));
         counter++;
