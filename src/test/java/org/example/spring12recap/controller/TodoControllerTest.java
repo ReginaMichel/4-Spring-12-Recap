@@ -82,4 +82,10 @@ class TodoControllerTest {
                 ));
         assertEquals(expected, repo.findById(id));
     }
+
+    @Test
+    void deleteById_whenInvalidId_statusNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/todo/24"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 }
