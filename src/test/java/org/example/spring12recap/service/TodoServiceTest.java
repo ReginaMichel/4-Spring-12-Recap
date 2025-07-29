@@ -5,6 +5,8 @@ import org.example.spring12recap.model.Todo;
 import org.example.spring12recap.model.TodoDTO;
 import org.example.spring12recap.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +27,9 @@ class TodoServiceTest {
                 new Todo("2", "Inhalt", OrderStatus.DONE)
         );
         TodoRepository mockRepo = mock(TodoRepository.class);
-        TodoService service = new TodoService(mockRepo, new IdService());
+        RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        TodoService service = new TodoService(mockRepo, new IdService(),
+                restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findAll()).thenReturn(expected);
         assertEquals(expected, service.getAll());
         verify(mockRepo, times(1)).findAll();
@@ -42,7 +46,9 @@ class TodoServiceTest {
         // Mockito GIVEN
         TodoRepository mockRepo = mock(TodoRepository.class);
         IdService mockId = mock(IdService.class);
-        TodoService todoService = new TodoService(mockRepo, mockId);
+        RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        TodoService todoService = new TodoService(mockRepo, mockId,
+                restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findById(id)).thenReturn(Optional.of(todo));
         when(mockId.generateID()).thenReturn(id);
         // WHEN
@@ -60,7 +66,9 @@ class TodoServiceTest {
         // GIVEN
         Todo expected = new Todo("3","Schlafen", OrderStatus.DONE);
         TodoRepository mockRepo = mock(TodoRepository.class);
-        TodoService service = new TodoService(mockRepo, new IdService());
+        RestClient.Builder restClientBuilder = mock(RestClient.Builder.class);
+        TodoService service = new TodoService(mockRepo, new IdService(),
+                restClientBuilder, "${OPENAI_API_KEY}");
         when(mockRepo.findById(expected.id())).thenReturn(Optional.of(expected));
         // WHEN
         Todo actual = service.deleteById(expected.id());

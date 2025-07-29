@@ -3,7 +3,9 @@ package org.example.spring12recap.service;
 import lombok.Getter;
 import org.example.spring12recap.model.*;
 import org.example.spring12recap.repository.TodoRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,12 +17,18 @@ public class TodoService {
     @Getter
     private final LinkedHashMap<Integer, Change> history;
     private int counter;
+    private final RestClient restClient;
 
-    public TodoService(TodoRepository repo, IdService idService) {
+    public TodoService(TodoRepository repo, IdService idService,
+                       RestClient.Builder restClientBuilder,
+                       @Value("${OPENAI_API_KEY}") String apiKey) {
         this.repo = repo;
         this.idService = idService;
         history = new LinkedHashMap<>();
         counter = 0;
+        this.restClient = restClientBuilder.baseUrl("https://api.openai.com/v1/chat/completions")
+                .defaultHeader("Authorization", "Bearer "
+                + apiKey).build();
     }
 
     public List<Todo> getAll() {
